@@ -2,5 +2,13 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "functions": {
+    "src/app/api/chat/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/flare-predict/route.ts": {
+      "maxDuration": 60
+    }
+  }
 }
