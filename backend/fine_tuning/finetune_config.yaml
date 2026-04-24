@@ -1,0 +1,50 @@
+# finetune_config.yaml
+# QLoRA fine-tuning config for solar flare detection
+# Model: LLaMA 3.1 8B Instruct (not 70B — fits on single GPU)
+# Framework: Unsloth + HuggingFace PEFT + TRL SFTTrainer
+
+# ── Base model ─────────────────────────────────────────────────────
+model_name: "meta-llama/Llama-3.1-8B-Instruct"
+load_in_4bit: true               # QLoRA quantization
+
+# ── LoRA adapter ───────────────────────────────────────────────────
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+bias: "none"
+task_type: "CAUSAL_LM"
+
+# ── Training ───────────────────────────────────────────────────────
+max_seq_length: 512
+per_device_train_batch_size: 4
+gradient_accumulation_steps: 4   # effective batch = 16
+learning_rate: 2.0e-4
+num_train_epochs: 3
+warmup_ratio: 0.05
+lr_scheduler_type: "cosine"
+optim: "adamw_8bit"              # memory-efficient
+
+# ── Data ───────────────────────────────────────────────────────────
+dataset_path: "data/flare_dataset.jsonl"
+eval_split: 0.1                  # 10% held out for evaluation
+shuffle_seed: 42
+
+# ── Output ─────────────────────────────────────────────────────────
+output_dir: "models/flare-llama-lora"
+save_steps: 100
+logging_steps: 10
+eval_steps: 50
+
+# ── Misc ───────────────────────────────────────────────────────────
+fp16: false
+bf16: true                       # use bf16 if GPU supports it (A100/H100)
+seed: 42
+report_to: "none"                # set to "wandb" if you want tracking

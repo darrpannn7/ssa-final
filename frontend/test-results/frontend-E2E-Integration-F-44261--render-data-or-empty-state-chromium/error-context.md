@@ -1,0 +1,412 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: frontend.spec.ts >> E2E Integration Flows >> E2E-002: CME full flow — all 5 cards render data or empty state
+- Location: tests\frontend.spec.ts:434:7
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "http://localhost:3000/cme", waiting until "load"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation [ref=e3]:
+    - generic [ref=e4]:
+      - link "Overview" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - button "Overview" [ref=e6]:
+          - generic [ref=e8]: Overview
+      - link "Solar Flare" [ref=e9] [cursor=pointer]:
+        - /url: /solar-flare
+        - button "Solar Flare" [ref=e10]:
+          - generic [ref=e12]: Solar Flare
+      - link "CME" [ref=e13] [cursor=pointer]:
+        - /url: /cme
+        - button "CME" [ref=e14]:
+          - generic [ref=e16]: CME
+      - link "Solar Wind" [ref=e17] [cursor=pointer]:
+        - /url: /solar-wind
+        - button "Solar Wind" [ref=e18]:
+          - generic [ref=e20]: Solar Wind
+      - link "SEP" [ref=e21] [cursor=pointer]:
+        - /url: /sep
+        - button "SEP" [ref=e22]:
+          - generic [ref=e24]: SEP
+      - link "LLM" [ref=e25] [cursor=pointer]:
+        - /url: /llm
+        - button "LLM" [ref=e26]:
+          - generic [ref=e28]: LLM
+  - main [ref=e29]:
+    - heading "CME" [level=1] [ref=e31]
+    - generic [ref=e32]:
+      - generic [ref=e36]:
+        - generic [ref=e37]: "01"
+        - heading "CME Velocity" [level=2] [ref=e38]
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - paragraph [ref=e41]: Coronal Mass Ejections are massive eruptions of plasma and magnetic field from the Sun's corona.
+            - generic [ref=e42]:
+              - paragraph [ref=e43]: Latest CME
+              - paragraph [ref=e44]: 2026-04-16T09:00:00-CME-001
+              - paragraph [ref=e45]: Thu, 16 Apr 2026 09:00:00 GMT
+          - generic [ref=e46]:
+            - paragraph [ref=e47]: "677"
+            - paragraph [ref=e48]: km/s
+            - paragraph [ref=e49]: Moderate CME
+      - generic [ref=e54]:
+        - generic [ref=e55]: "02"
+        - heading "Magnetic Structure" [level=2] [ref=e56]
+        - generic [ref=e57]:
+          - paragraph [ref=e59]: The magnetic structure determines how the CME interacts with Earth's magnetosphere.
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: Type
+              - generic [ref=e63]: C
+            - generic [ref=e64]:
+              - generic [ref=e65]: Latitude
+              - generic [ref=e66]: "-9°"
+            - generic [ref=e67]:
+              - generic [ref=e68]: Longitude
+              - generic [ref=e69]: 22°
+            - generic [ref=e70]:
+              - generic [ref=e71]: Half Angle
+              - generic [ref=e72]: 16°
+            - generic [ref=e73]:
+              - generic [ref=e74]: Location
+              - generic [ref=e75]: S08W25
+      - generic [ref=e80]:
+        - generic [ref=e81]: "03"
+        - heading "Impact Probability" [level=2] [ref=e82]
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - paragraph [ref=e85]: Impact probability depends on CME trajectory, angular width, and speed relative to the Sun-Earth line.
+            - generic [ref=e86]:
+              - paragraph [ref=e87]: Latest Event
+              - generic [ref=e88]: Low Impact Risk
+          - generic [ref=e89]:
+            - paragraph [ref=e90]: Last 10 Events
+            - generic [ref=e91]:
+              - generic [ref=e92]:
+                - generic [ref=e93]: High
+                - generic [ref=e95]: "0"
+              - generic [ref=e96]:
+                - generic [ref=e97]: Moderate
+                - generic [ref=e99]: "0"
+              - generic [ref=e100]:
+                - generic [ref=e101]: Low
+                - generic [ref=e104]: "10"
+      - generic [ref=e109]:
+        - generic [ref=e110]: "04"
+        - heading "CME Coronagraph Image" [level=2] [ref=e111]
+        - generic [ref=e112]:
+          - paragraph [ref=e114]: LASCO coronagraph blocks the bright solar disk to reveal faint coronal structures and CMEs propagating outward.
+          - img "LASCO CME Coronagraph" [ref=e116]
+      - generic [ref=e121]:
+        - generic [ref=e122]: "05"
+        - heading "CME Event Log" [level=2] [ref=e123]
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e126]: ID
+            - generic [ref=e127]: Time
+            - generic [ref=e128]: Speed
+            - generic [ref=e129]: Type
+            - generic [ref=e130]: Location
+            - generic [ref=e131]: Risk
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic "2026-04-15T01:26:00-CME-001" [ref=e134]: CME-001
+              - generic [ref=e135]: Apr 15, 06:56 AM
+              - generic [ref=e136]: 602 km/s
+              - generic [ref=e137]: C
+              - generic [ref=e138]: —
+              - generic [ref=e139]: Low
+            - generic [ref=e140]:
+              - generic "2026-04-15T09:09:00-CME-001" [ref=e141]: CME-001
+              - generic [ref=e142]: Apr 15, 02:39 PM
+              - generic [ref=e143]: 414 km/s
+              - generic [ref=e144]: S
+              - generic [ref=e145]: N13E53
+              - generic [ref=e146]: Low
+            - generic [ref=e147]:
+              - generic "2026-04-15T11:09:00-CME-001" [ref=e148]: CME-001
+              - generic [ref=e149]: Apr 15, 04:39 PM
+              - generic [ref=e150]: 422 km/s
+              - generic [ref=e151]: S
+              - generic [ref=e152]: —
+              - generic [ref=e153]: Low
+            - generic [ref=e154]:
+              - generic "2026-04-15T11:53:00-CME-001" [ref=e155]: CME-001
+              - generic [ref=e156]: Apr 15, 05:23 PM
+              - generic [ref=e157]: 880 km/s
+              - generic [ref=e158]: C
+              - generic [ref=e159]: —
+              - generic [ref=e160]: Low
+            - generic [ref=e161]:
+              - generic "2026-04-15T15:36:00-CME-001" [ref=e162]: CME-001
+              - generic [ref=e163]: Apr 15, 09:06 PM
+              - generic [ref=e164]: 492 km/s
+              - generic [ref=e165]: S
+              - generic [ref=e166]: S40W80
+              - generic [ref=e167]: Low
+            - generic [ref=e168]:
+              - generic "2026-04-16T00:00:00-CME-001" [ref=e169]: CME-001
+              - generic [ref=e170]: Apr 16, 05:30 AM
+              - generic [ref=e171]: 458 km/s
+              - generic [ref=e172]: S
+              - generic [ref=e173]: —
+              - generic [ref=e174]: Low
+            - generic [ref=e175]:
+              - generic "2026-04-16T00:48:00-CME-001" [ref=e176]: CME-001
+              - generic [ref=e177]: Apr 16, 06:18 AM
+              - generic [ref=e178]: 488 km/s
+              - generic [ref=e179]: S
+              - generic [ref=e180]: —
+              - generic [ref=e181]: Low
+            - generic [ref=e182]:
+              - generic "2026-04-16T04:24:00-CME-001" [ref=e183]: CME-001
+              - generic [ref=e184]: Apr 16, 09:54 AM
+              - generic [ref=e185]: 361 km/s
+              - generic [ref=e186]: S
+              - generic [ref=e187]: —
+              - generic [ref=e188]: Low
+            - generic [ref=e189]:
+              - generic "2026-04-16T08:00:00-CME-001" [ref=e190]: CME-001
+              - generic [ref=e191]: Apr 16, 01:30 PM
+              - generic [ref=e192]: 295 km/s
+              - generic [ref=e193]: S
+              - generic [ref=e194]: —
+              - generic [ref=e195]: Low
+            - generic [ref=e196]:
+              - generic "2026-04-16T09:00:00-CME-001" [ref=e197]: CME-001
+              - generic [ref=e198]: Apr 16, 02:30 PM
+              - generic [ref=e199]: 677 km/s
+              - generic [ref=e200]: C
+              - generic [ref=e201]: S08W25
+              - generic [ref=e202]: Low
+  - button "Open Next.js Dev Tools" [ref=e209] [cursor=pointer]:
+    - img [ref=e210]
+  - alert [ref=e213]
+```
+
+# Test source
+
+```ts
+  335 |       test.skip();
+  336 |     }
+  337 |   });
+  338 | 
+  339 |   test("FC-007: M-class flare badge shows orange color", async ({ page }) => {
+  340 |     await page.goto(`${FE}/solar-flare`);
+  341 |     await page.waitForTimeout(3000);
+  342 |     const mBadge = page.locator("span").filter({ hasText: /^M\d/ }).first();
+  343 |     if (await mBadge.count() > 0) {
+  344 |       const cls = await mBadge.getAttribute("class") ?? "";
+  345 |       console.log(`[FC-007] M-class badge class: "${cls}"`);
+  346 |       expect(cls).toContain("orange");
+  347 |     } else {
+  348 |       console.log(`[FC-007] No M-class flares in current data`);
+  349 |       test.skip();
+  350 |     }
+  351 |   });
+  352 | 
+  353 |   test("FC-008/FC-009: Shows flare rows or 'No flare events found'", async ({ page }) => {
+  354 |     await page.goto(`${FE}/solar-flare`);
+  355 |     await page.waitForTimeout(4000);
+  356 |     const noFlares = page.getByText("No flare events found").first();
+  357 |     const rows     = page.locator(".grid.grid-cols-5 > span").first();
+  358 |     const hasNoFlares = await noFlares.isVisible();
+  359 |     const hasRows     = await rows.isVisible();
+  360 |     console.log(`[FC-008/FC-009] 'No flare events found': ${hasNoFlares} | Flare rows visible: ${hasRows}`);
+  361 |     expect(hasNoFlares || hasRows).toBeTruthy();
+  362 |   });
+  363 | });
+  364 | 
+  365 | test.describe("Component: CMECards", () => {
+  366 |   test("FC-010: CMEVelocity card shows speed + km/s label", async ({ page }) => {
+  367 |     await page.goto(`${FE}/cme`);
+  368 |     await page.waitForTimeout(2000);
+  369 |     const kms = page.getByText("km/s").first();
+  370 |     await expect(kms).toBeVisible({ timeout: 15000 });
+  371 |     console.log(`[FC-010] 'km/s' label visible: true`);
+  372 |   });
+  373 | 
+  374 |   test("FC-011: CME Impact Probability shows High/Moderate/Low bars", async ({ page }) => {
+  375 |     await page.goto(`${FE}/cme`);
+  376 |     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+  377 |     await page.waitForTimeout(2000);
+  378 |     const high = page.getByText("High").first();
+  379 |     const mod  = page.getByText("Moderate").first();
+  380 |     console.log(`[FC-011] High visible: ${await high.isVisible()} | Moderate visible: ${await mod.isVisible()}`);
+  381 |     expect(await high.isVisible() || await mod.isVisible()).toBeTruthy();
+  382 |   });
+  383 | 
+  384 |   test("FC-012: CME Coronagraph image has src attribute", async ({ page }) => {
+  385 |     await page.goto(`${FE}/cme`);
+  386 |     await page.waitForTimeout(2000);
+  387 |     const img = page.locator("img").filter({ hasNot: page.locator("[alt='']") }).first();
+  388 |     const src = await img.getAttribute("src").catch(() => "");
+  389 |     console.log(`[FC-012] Image src: "${src}"`);
+  390 |     expect(src?.length).toBeGreaterThan(0);
+  391 |   });
+  392 | 
+  393 |   test("FC-013: CME Event Log shows Speed and Risk columns", async ({ page }) => {
+  394 |     await page.goto(`${FE}/cme`);
+  395 |     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  396 |     await page.waitForTimeout(2000);
+  397 |     const speed = page.getByText("Speed", { exact: false }).first();
+  398 |     const risk  = page.getByText("Risk",  { exact: false }).first();
+  399 |     console.log(`[FC-013] Speed: ${await speed.isVisible()} | Risk: ${await risk.isVisible()}`);
+  400 |     expect(await speed.isVisible() || await risk.isVisible()).toBeTruthy();
+  401 |   });
+  402 | 
+  403 |   test("FC-014: GlassCard renders children (basic check)", async ({ page }) => {
+  404 |     await page.goto(`${FE}/sep`);
+  405 |     await waitForNoSkeleton(page);
+  406 |     // GlassCard wraps stat values — check a rendered value exists
+  407 |     const card = page.locator(".glass, [class*='glass']").first();
+  408 |     const exists = await card.count() > 0;
+  409 |     console.log(`[FC-014] GlassCard element found: ${exists}`);
+  410 |     // Even if class differs, page content renders inside a card wrapper
+  411 |     expect(true).toBeTruthy();
+  412 |   });
+  413 | });
+  414 | 
+  415 | 
+  416 | // ═══════════════════════════════════════════════════════════════════════════════
+  417 | //  END-TO-END FLOWS  (E2E-001 to E2E-010)
+  418 | // ═══════════════════════════════════════════════════════════════════════════════
+  419 | 
+  420 | test.describe("E2E Integration Flows", () => {
+  421 |   test("E2E-001: Solar Flare full flow — page loads with live data, no console errors", async ({ page }) => {
+  422 |     const errors: string[] = [];
+  423 |     page.on("console", (msg) => {
+  424 |       if (msg.type() === "error") errors.push(msg.text());
+  425 |     });
+  426 |     await page.goto(`${FE}/solar-flare`);
+  427 |     await page.waitForTimeout(5000);
+  428 |     console.log(`[E2E-001] Console errors: ${errors.length > 0 ? errors.join(" | ") : "none"}`);
+  429 |     // No fatal JS errors
+  430 |     const fatalErrors = errors.filter(e => !e.includes("favicon") && !e.includes("404"));
+  431 |     expect(fatalErrors).toHaveLength(0);
+  432 |   });
+  433 | 
+  434 |   test("E2E-002: CME full flow — all 5 cards render data or empty state", async ({ page }) => {
+> 435 |     await page.goto(`${FE}/cme`);
+      |                ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  436 |     await page.waitForTimeout(4000);
+  437 | 
+  438 |     // Scroll through all cards
+  439 |     for (let i = 0; i < 5; i++) {
+  440 |       await page.keyboard.press("PageDown");
+  441 |       await page.waitForTimeout(500);
+  442 |     }
+  443 | 
+  444 |     const kmVisible    = await page.getByText("km/s").first().isVisible();
+  445 |     const typeVisible  = await page.getByText("Type", { exact: false }).first().isVisible();
+  446 |     const highVisible  = await page.getByText("High").first().isVisible();
+  447 |     console.log(`[E2E-002] km/s: ${kmVisible} | Type field: ${typeVisible} | High badge: ${highVisible}`);
+  448 |     expect(kmVisible || typeVisible || highVisible).toBeTruthy();
+  449 |   });
+  450 | 
+  451 |   test("E2E-003: SEP page full flow — proton + risk level + mission cards", async ({ page }) => {
+  452 |     await page.goto(`${FE}/sep`);
+  453 |     await waitForNoSkeleton(page);
+  454 | 
+  455 |     const pfu      = await page.getByText("pfu").first().isVisible();
+  456 |     const crew     = await page.getByText("Crew", { exact: false }).first().isVisible();
+  457 |     const riskCard = await page.getByText("Radiation Risk Level", { exact: false }).first().isVisible();
+  458 |     console.log(`[E2E-003] pfu: ${pfu} | Crew card: ${crew} | Risk Level card: ${riskCard}`);
+  459 |     expect(pfu && crew).toBeTruthy();
+  460 |   });
+  461 | 
+  462 |   test("E2E-004: Solar Wind full flow — speed, density, Bz visible", async ({ page }) => {
+  463 |     await page.goto(`${FE}/solar-wind`);
+  464 |     await waitForNoSkeleton(page);
+  465 | 
+  466 |     const kms = await page.getByText("km/s").first().isVisible();
+  467 |     const nt  = await page.getByText("nT").first().isVisible();
+  468 |     console.log(`[E2E-004] km/s: ${kms} | nT: ${nt}`);
+  469 |     expect(kms && nt).toBeTruthy();
+  470 |   });
+  471 | 
+  472 |   test("E2E-005: AIA wavelength switch — image updates within 5 sec", async ({ page }) => {
+  473 |     await page.goto(`${FE}/solar-flare`);
+  474 |     await page.waitForTimeout(2000);
+  475 | 
+  476 |     let requests = 0;
+  477 |     page.on("request", (req) => {
+  478 |       if (req.url().includes("aia-image")) requests++;
+  479 |     });
+  480 | 
+  481 |     for (const wl of ["94Å", "193Å", "131Å"]) {
+  482 |       const btn = page.getByText(wl, { exact: true }).first();
+  483 |       if (await btn.count() > 0) {
+  484 |         await btn.click();
+  485 |         await page.waitForTimeout(1000);
+  486 |         console.log(`[E2E-005] Clicked ${wl} — AIA requests so far: ${requests}`);
+  487 |       }
+  488 |     }
+  489 |     console.log(`[E2E-005] Total AIA image requests triggered: ${requests}`);
+  490 |     expect(requests).toBeGreaterThanOrEqual(0); // may be 0 if image is static URL
+  491 |   });
+  492 | 
+  493 |   test("E2E-006: Retry flow — error banner appears when API is mocked to fail then disappears after retry", async ({ page }) => {
+  494 |     let callCount = 0;
+  495 |     await page.route("**/space-weather/wind/all", async (route) => {
+  496 |       callCount++;
+  497 |       if (callCount === 1) {
+  498 |         await route.fulfill({ status: 500, body: JSON.stringify({ detail: "Simulated" }) });
+  499 |       } else {
+  500 |         await route.continue();
+  501 |       }
+  502 |     });
+  503 | 
+  504 |     await page.goto(`${FE}/solar-wind`);
+  505 |     await page.waitForTimeout(3000);
+  506 | 
+  507 |     const retryBtn = page.getByRole("button", { name: /retry/i });
+  508 |     const hasRetry = await retryBtn.isVisible();
+  509 |     console.log(`[E2E-006] Retry button after error: ${hasRetry}`);
+  510 | 
+  511 |     if (hasRetry) {
+  512 |       await retryBtn.click();
+  513 |       await page.waitForTimeout(4000);
+  514 |       const stillError = await retryBtn.isVisible();
+  515 |       console.log(`[E2E-006] Retry button after clicking Retry: ${stillError}`);
+  516 |     }
+  517 |     expect(true).toBeTruthy(); // flow completed without crash
+  518 |   });
+  519 | 
+  520 |   test("E2E-007: Page navigation — all 4 routes load without crash", async ({ page }) => {
+  521 |     const routes = [
+  522 |       { path: "/solar-flare", label: "Solar Flare" },
+  523 |       { path: "/cme",         label: "CME" },
+  524 |       { path: "/sep",         label: "SEP" },
+  525 |       { path: "/solar-wind",  label: "Solar Wind" },
+  526 |     ];
+  527 | 
+  528 |     for (const { path, label } of routes) {
+  529 |       const errors: string[] = [];
+  530 |       page.on("console", (msg) => {
+  531 |         if (msg.type() === "error") errors.push(msg.text());
+  532 |       });
+  533 |       await page.goto(`${FE}${path}`);
+  534 |       await page.waitForTimeout(2000);
+  535 |       const title = await page.title();
+```
