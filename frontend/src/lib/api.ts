@@ -1,5 +1,7 @@
 // lib/api.ts
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+// Throw loudly so a missing env var is caught at build time, not as a 502 at runtime
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+if (!BASE_URL) throw new Error("NEXT_PUBLIC_API_URL is not set");
 
 // --- Card 01: HMI Magnetogram ---
 export function getMagnetogramImageUrl(): string {
