@@ -196,19 +196,13 @@ function SolarImageCard({
 
         {/* The image itself */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+      <img
   src={imageUrl}
   alt={config.label}
-  loading={config.id === "cme" ? "eager" : "lazy"}   // ⭐ ADD THIS LINE
-  decoding="async"                                   // ⭐ ADD THIS LINE
-  onLoad={() => setState("loaded")}
-  onError={() => setState("error")}
-          className={`
-            w-full h-full object-cover transition-opacity duration-500
-            ${state === "loaded" ? "opacity-100" : "opacity-0"}
-            group-hover:scale-[1.02] transition-transform duration-700
-          `}
-        />
+  loading={config.id === "cme" ? "eager" : "lazy"}
+  decoding="async"
+  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
+/>
 
         {/* Subtle vignette overlay */}
         <div
