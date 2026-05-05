@@ -19,7 +19,7 @@ export default function HomePage() {
             xl:text-8xl
           "
         >
-          STELAR
+          Orbital Perception
         </h1>
 
         <p
@@ -34,7 +34,7 @@ export default function HomePage() {
             leading-relaxed
           "
         >
-          Modular, Scalable, and Dynamic. The future of SSA analytics starts here.
+          Future of Space Weather Analytics and Prediction
         </p>
       </section>
     </>
