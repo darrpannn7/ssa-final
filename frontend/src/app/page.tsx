@@ -1,5 +1,18 @@
 import SolarVisualsBanner from "../components/home/SolarVisualsBanner"
 
+
+export const metadata = {
+  other: {
+    link: [
+      {
+        rel: "preload",
+        as: "image",
+        href: "https://soho.nascom.nasa.gov/data/LATEST/current_c2.gif",
+      },
+    ],
+  },
+}
+
 export default function HomePage() {
   return (
     <>
@@ -42,14 +55,21 @@ export default function HomePage() {
 
         {/* Scroll cue */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-white/20">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-white/20">
+            Scroll
+          </span>
           <svg
             className="w-4 h-4 text-white/20 animate-bounce"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </div>
       </section>
@@ -57,5 +77,5 @@ export default function HomePage() {
       {/* ── Solar Observatory Visuals ── */}
       <SolarVisualsBanner />
     </>
-  );
+  )
 }
