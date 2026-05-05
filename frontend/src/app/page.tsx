@@ -1,4 +1,4 @@
-import SolarVisualsBanner from "@/components/home/SolarVisualsBanner"
+import SolarVisualsBanner from "../components/home/SolarVisualsBanner"
 
 export default function HomePage() {
   return (
