@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (min-width: 1920px) {
+  html, :root {
+    /* 100vw / 120 ensures that at 1920px, 1rem = 16px. At 5120px, it perfectly inflates up proportionally to ~42px */
+    font-size: 0.833333vw !important;
+  }
+}
+
+html,
+body {
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
