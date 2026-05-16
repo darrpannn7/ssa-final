@@ -177,6 +177,7 @@ export default function FlarePredictionCard() {
 
   // Initial fetch + auto-refresh every 5 min
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPrediction();
     const id = setInterval(fetchPrediction, REFRESH_INTERVAL_MS);
     return () => clearInterval(id);

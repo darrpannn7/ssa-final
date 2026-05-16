@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { useEffect, useState } from "react"
-import { getCMEData, getCMEImageUrl } from "@/lib/api"
+import { getCMEData } from "@/lib/api"
 
 interface CMEEvent {
   activityID: string
@@ -41,7 +42,7 @@ export function CMEVelocityContent() {
       <div className="flex flex-col justify-center space-y-4">
         <p className="text-lg text-zinc-300 leading-relaxed">
           Coronal Mass Ejections are massive eruptions of plasma and magnetic
-          field from the Sun's corona.
+          field from the Sun&apos;s corona.
         </p>
         {loading && <p className="text-white/40 text-sm">Loading CME data...</p>}
         {latest && (
@@ -83,7 +84,7 @@ export function CMEMagneticContent() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full h-full mt-6">
       <div className="flex flex-col justify-center space-y-4">
         <p className="text-lg text-zinc-300 leading-relaxed">
-          The magnetic structure determines how the CME interacts with Earth's
+          The magnetic structure determines how the CME interacts with Earth&apos;s
           magnetosphere.
         </p>
       </div>

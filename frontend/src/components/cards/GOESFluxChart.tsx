@@ -10,9 +10,14 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
+interface FluxPoint {
+  time_tag: string;
+  flux: number;
+}
+
 export default function GOESFluxChart() {
-  const [primary, setPrimary] = useState<any[]>([]);
-  const [secondary, setSecondary] = useState<any[]>([]);
+  const [primary, setPrimary] = useState<FluxPoint[]>([]);
+  const [secondary, setSecondary] = useState<FluxPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [containerWidth, setContainerWidth] = useState<number>(700);
   const containerRef = useRef<HTMLDivElement>(null);

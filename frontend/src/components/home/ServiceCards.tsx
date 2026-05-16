@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import dynamic from "next/dynamic"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { useRef, useEffect, useState } from "react"
 import { ServiceCard } from "@/types/service-card"
 import { getGoesXrayFlux, getAIAImageUrl } from "@/lib/api"
@@ -39,14 +40,6 @@ const InteractiveMagnetogram = dynamic(
   }
 )
 
-// AIA wavelength → NASA image URL mapping
-// REPLACE the AIA_URLS map with this
-const AIA_URLS: Record<string, string> = {
-  "94Å":  `${process.env.NEXT_PUBLIC_API_URL}/space-weather/aia-image?wavelength=0094`,
-  "131Å": `${process.env.NEXT_PUBLIC_API_URL}/space-weather/aia-image?wavelength=0131`,
-  "171Å": `${process.env.NEXT_PUBLIC_API_URL}/space-weather/aia-image?wavelength=0171`,
-  "193Å": `${process.env.NEXT_PUBLIC_API_URL}/space-weather/aia-image?wavelength=0193`,
-}
 
 // ─── Card 01: Magnetogram ────────────────────────────────────────────────────
 function MagnetogramContent() {
@@ -55,7 +48,7 @@ function MagnetogramContent() {
 
 // ─── Card 02: GOES X-ray Flux ────────────────────────────────────────────────
 function GoesFluxContent() {
-  const [flux, setFlux] = useState<any[]>([])
+  const [flux, setFlux] = useState<{ flux: number }[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -272,7 +265,7 @@ function Card({
   card: ServiceCard
   index: number
   total: number
-  progress: any
+  progress: MotionValue<number>
 }) {
   const start = index / total
   const end = (index + 1) / total

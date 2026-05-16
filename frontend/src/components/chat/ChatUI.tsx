@@ -134,6 +134,7 @@ export default function ChatUI() {
 
   useEffect(() => {
     if (!image) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewUrl(null);
       return;
     }

@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import Navbar from "@/components/layout/Navbar";
-import ServiceCards from "@/components/home/ServiceCards";
 
 export const metadata = {
   title: "Orbital Perception",

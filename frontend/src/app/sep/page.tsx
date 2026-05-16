@@ -136,6 +136,7 @@ export default function SEPPage() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
     const interval = setInterval(fetchData, 5 * 60 * 1000);
     return () => clearInterval(interval);

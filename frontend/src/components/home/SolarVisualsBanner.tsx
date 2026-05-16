@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { getMagnetogramImageUrl, getAIAImageUrl, getCMEImageUrl } from "@/lib/api"
+import { getMagnetogramImageUrl, getAIAImageUrl } from "@/lib/api"
 
 // ---------------------------------------------------------------------------
 // Types
@@ -194,15 +194,16 @@ function SolarImageCard({
           </div>
         )}
 
-        {/* The image itself */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-  src={imageUrl}
-  alt={config.label}
-  loading={config.id === "cme" ? "eager" : "lazy"}
-  decoding="async"
-  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
-/>
+        <img
+        src={imageUrl}
+        alt={config.label}
+        onLoad={() => setState("loaded")}
+        onError={() => setState("error")}
+        loading={config.id === "cme" ? "eager" : "lazy"}
+        decoding="async"
+        className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
+      />
 
         {/* Subtle vignette overlay */}
         <div

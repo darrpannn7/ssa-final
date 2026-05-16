@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -20,7 +21,6 @@ export default function InteractiveMagnetogram() {
   const [regions, setRegions] = useState<Region[]>([])
   const [clicked, setClicked] = useState<Region | null>(null)
   const [loading, setLoading] = useState(true)
-  const [imgSize, setImgSize] = useState({ w: 0, h: 0 })
   const [scale, setScale] = useState(1);
   const baseSize = 280;
 

@@ -10,8 +10,14 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
+interface ProtonPoint {
+  time_tag: string;
+  flux: number;
+  energy: string;
+}
+
 export default function ProtonFluxChart() {
-  const [protonData, setProtonData] = useState<any[]>([]);
+  const [protonData, setProtonData] = useState<ProtonPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [containerWidth, setContainerWidth] = useState<number>(700);
   const containerRef = useRef<HTMLDivElement>(null);

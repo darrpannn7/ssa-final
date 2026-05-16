@@ -10,8 +10,14 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
+interface SolarWindPoint {
+  time_tag: string;
+  speed: number;
+  density: number;
+}
+
 export default function SolarWindChart() {
-  const [solarWind, setSolarWind] = useState<any[]>([]);
+  const [solarWind, setSolarWind] = useState<SolarWindPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [containerWidth, setContainerWidth] = useState<number>(700);
   const containerRef = useRef<HTMLDivElement>(null);
