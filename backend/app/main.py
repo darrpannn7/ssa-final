@@ -26,21 +26,10 @@ if _os.path.isdir("static"):
 # ✅ FIXED CORS CONFIG
 # =========================
 
-frontend_url = os.getenv("FRONTEND_URL")
-
-origins = [
-    "http://localhost:3000",  # local dev
-    "http://localhost:3001",  # alternate local
-]
-
-# Add Render/Vercel frontend URL from env var
-if frontend_url:
-    origins.append(frontend_url)
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins if origins else ["*"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )

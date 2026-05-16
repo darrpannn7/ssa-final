@@ -8,6 +8,19 @@ load_dotenv()
 NASA_API_KEY = os.getenv("NASA_API_KEY", "DEMO_KEY")
 NASA_CME_URL = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CME"
 
+import time
+from typing import Dict, Any
+
+_cache: Dict[str, Dict[str, Any]] = {}
+
+def _get_cached(key: str, ttl: int):
+    e = _cache.get(key)
+    if e and (time.time() - e["ts"]) < ttl:
+        return e["data"]
+    return None
+
+def _set_cached(key: str, data: Any):
+    _cache[key] = {"data": data, "ts": time.time()}
 class CMEProcessor:
 
     def _get_session(self):
@@ -23,6 +36,10 @@ class CMEProcessor:
         return session
 
     def get_full_cme_package(self):
+        cached = _get_cached("cme_full", 300)
+        if cached:
+            return cached
+
         session = self._get_session()
 
         try:
@@ -65,11 +82,13 @@ class CMEProcessor:
                 )
             })
 
-        return {
+        result = {
             "status": "success",
             "total": len(cme_list),
             "cme_events": cme_list
         }
+        _set_cached("cme_full", result)
+        return result
 
     def get_latest_lasco_image(self):
         try:

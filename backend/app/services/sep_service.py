@@ -1,7 +1,18 @@
 import httpx
 import asyncio
+import time
 from typing import Dict, List, Any
 
+_cache: Dict[str, Dict[str, Any]] = {}
+
+def _get_cached(key: str, ttl: int):
+    e = _cache.get(key)
+    if e and (time.time() - e["ts"]) < ttl:
+        return e["data"]
+    return None
+
+def _set_cached(key: str, data: Any):
+    _cache[key] = {"data": data, "ts": time.time()}
 
 class SEPFetcher:
     """
@@ -192,6 +203,10 @@ class SEPFetcher:
     @staticmethod
     async def get_all_sep_data() -> Dict[str, Any]:
         """Fetches all SEP data: particle flux, alerts, and radiation risk."""
+        cached = _get_cached("sep_all", 120)
+        if cached:
+            return cached
+
         async with httpx.AsyncClient() as client:
             proton_res, electron_res, alerts_res = await asyncio.gather(
                 client.get(SEPFetcher.PROTON_FLUX_URL, timeout=10.0),
@@ -205,7 +220,7 @@ class SEPFetcher:
         alerts_data = SEPFetcher._process_alerts(alerts_res)
         radiation_risk = SEPFetcher._calculate_radiation_risk(proton_data)
 
-        return {
+        result = {
             "particle_flux": {
                 "proton": proton_data,
                 "electron": electron_data,
@@ -213,3 +228,5 @@ class SEPFetcher:
             "alerts": alerts_data,
             "radiation_risk": radiation_risk,
         }
+        _set_cached("sep_all", result)
+        return result

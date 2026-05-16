@@ -12,12 +12,26 @@ load_dotenv()
 NASA_API_KEY = os.getenv("NASA_API_KEY", "DEMO_KEY")
 router = APIRouter()
 
+_cache: dict = {}
+
+def _get_cached(key: str, ttl: int):
+    e = _cache.get(key)
+    if e and (time.time() - e["ts"]) < ttl:
+        return e["data"]
+    return None
+
+def _set_cached(key: str, data: dict):
+    _cache[key] = {"data": data, "ts": time.time()}
 
 @router.get("/flares")
 async def get_solar_flares():
     """
     Returns solar flare events from CCMC DONKI.
     """
+    cached = _get_cached("solar_flares", 300)
+    if cached:
+        return cached
+
     url = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR"
 
     try:
@@ -39,11 +53,13 @@ async def get_solar_flares():
             for flare in data[-10:]  # last 10 events
         ]
 
-        return {
+        result = {
             "status": "success",
             "total": len(formatted),
             "flares": formatted
         }
+        _set_cached("solar_flares", result)
+        return result
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
