@@ -1,8 +1,10 @@
 import os
+import time
 from fastapi import APIRouter, HTTPException
 import httpx
 from fastapi.responses import StreamingResponse
 from app.services.solar_wind_service import SolarWindFetcher
+from app.services.kp_service import KpFetcher
 from dotenv import load_dotenv
 from fastapi.responses import Response
 
@@ -157,3 +159,16 @@ async def get_all_sep_data():
         "alerts": data["alerts"],
         "radiation_risk": data["radiation_risk"],
     }
+
+
+# ─── Kp Index ─────────────────────────────────────────────────────────────────
+
+@router.get("/kp")
+async def get_kp_index():
+    """
+    Returns the real NOAA Planetary K-index (official observed value).
+    Source: https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json
+    Updated every 3 hours by NOAA. Cached for 3 minutes server-side.
+    """
+    result = await KpFetcher.get_kp_index()
+    return result

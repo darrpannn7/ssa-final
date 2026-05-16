@@ -84,3 +84,11 @@ export async function getSEPAlerts() {
   return res.json()
   // Returns: { status, risk_level, alerts }
 }
+
+// --- Kp Index (NOAA Planetary K-index, official observed) ---
+export async function getKpIndex() {
+  const res = await fetch(`${BASE_URL}/space-weather/kp`)
+  if (!res.ok) throw new Error("Kp index fetch failed")
+  return res.json()
+  // Returns: { status, current_kp, time_tag, station_count, history: [{time_tag, kp, a_running}] }
+}

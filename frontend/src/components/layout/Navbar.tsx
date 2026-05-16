@@ -19,7 +19,6 @@ const NAV_ITEMS = [
   { label: "CME", href: "/cme" },
   { label: "Solar Wind", href: "/solar-wind" },
   { label: "SEP", href: "/sep" },
-  { label: "LLM", href: "/llm" },
 ];
 
 export default function Navbar() {

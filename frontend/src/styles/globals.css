@@ -28,3 +28,13 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Hide scrollbar globally — keep scroll functionality */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}

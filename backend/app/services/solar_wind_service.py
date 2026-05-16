@@ -1,6 +1,19 @@
 import httpx
 import asyncio
+import time
 from typing import Dict, List, Any
+
+# ─── Simple in-memory TTL cache ───────────────────────────────────────────────
+_cache: Dict[str, Dict[str, Any]] = {}
+
+def _get_cached(key: str, ttl: int):
+    e = _cache.get(key)
+    if e and (time.time() - e["ts"]) < ttl:
+        return e["data"]
+    return None
+
+def _set_cached(key: str, data: Any):
+    _cache[key] = {"data": data, "ts": time.time()}
 
 
 class SolarWindFetcher:
@@ -140,8 +153,13 @@ class SolarWindFetcher:
     @staticmethod
     async def get_all_solar_wind_data() -> Dict[str, List[Dict[str, Any]]]:
         """
-        Fetches both solar wind and IMF data simultaneously using a shared client.
+        Fetches both solar wind and IMF data simultaneously.
+        Cached for 2 minutes to reduce upstream calls.
         """
+        cached = _get_cached("solar_wind_all", 120)
+        if cached is not None:
+            return cached
+
         async with httpx.AsyncClient() as client:
             wind_res, imf_res = await asyncio.gather(
                 client.get(SolarWindFetcher.SOLAR_WIND_URL, timeout=10.0),
@@ -149,7 +167,9 @@ class SolarWindFetcher:
                 return_exceptions=True
             )
 
-        return {
+        result = {
             "solar_wind": SolarWindFetcher._process_solar_wind(wind_res),
             "imf": SolarWindFetcher._process_imf(imf_res),
         }
+        _set_cached("solar_wind_all", result)
+        return result

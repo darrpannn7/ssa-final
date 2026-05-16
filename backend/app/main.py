@@ -17,8 +17,10 @@ load_dotenv()
 
 app = FastAPI(title="SSA Backend")
 
-# ✅ Static files (keep as-is)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Static files — mount only if directory exists (safe for Docker builds)
+import os as _os
+if _os.path.isdir("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # =========================
 # ✅ FIXED CORS CONFIG
@@ -28,19 +30,16 @@ frontend_url = os.getenv("FRONTEND_URL")
 
 origins = [
     "http://localhost:3000",  # local dev
+    "http://localhost:3001",  # alternate local
 ]
 
-# Add Vercel URL if provided
+# Add Render/Vercel frontend URL from env var
 if frontend_url:
     origins.append(frontend_url)
 
-# TEMP: allow all (to make sure everything works)
-# You can remove "*" later after confirming
-origins.append("*")
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=origins if origins else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

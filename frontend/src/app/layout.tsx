@@ -3,8 +3,8 @@ import Navbar from "@/components/layout/Navbar";
 import ServiceCards from "@/components/home/ServiceCards";
 
 export const metadata = {
-  title: "STELAR",
-  description: "SSA Analytics Dashboard",
+  title: "Orbital Perception",
+  description: "Future of Space Weather Analytics",
 };
 
 export default function RootLayout({

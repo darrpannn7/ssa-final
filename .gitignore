@@ -2,9 +2,19 @@ node_modules/
 .next/
 venv/
 backend/app/assets/cme/
-*.env
 
+# Frontend local env (contains localhost URLs, not for deployment)
+.env.local
+
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Large data files
 backend/assets/flare/magnetogram/*.fits
 backend/assets/flare/magnetogram/*.png
+
+# Backend secrets — set these as Render env vars instead of committing
+backend/.env

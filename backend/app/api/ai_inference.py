@@ -39,43 +39,10 @@ async def chat(
     message: str               = Form(...),
     image:   UploadFile | None = File(default=None),
 ):
-    raw_bytes        = None
-    image_stack      = _fake_multichannel()
-    detection_result = None
-
-    if image is not None:
-        try:
-            raw_bytes   = await image.read()
-            image_stack = _image_to_stack(raw_bytes)
-
-            # ── Run detection + annotation ──────────────────────
-            detection_result = detect_and_annotate(raw_bytes)
-
-        except Exception:
-            logger.exception("Failed to process uploaded image")
-            raise HTTPException(
-                status_code=422,
-                detail="Could not read the uploaded image."
-            )
-
-    try:
-        result = ai_service.chat(
-            message=message,
-            image_stack=image_stack,
-            image_bytes=raw_bytes,
-        )
-    except Exception:
-        logger.exception("ai_service.chat raised unexpectedly")
-        raise HTTPException(status_code=500, detail="Inference error.")
-
-    return JSONResponse({
-        "response":        result["text"],
-        "surya_data":      result["surya_data"],
-        "source":          result["source"],
-        # ── New fields ──────────────────────────────────────────
-        "annotated_image": detection_result["annotated_image"] if detection_result else None,
-        "regions":         detection_result["regions"]         if detection_result else [],
-    })
+    return JSONResponse(
+        content={"error": "LLM backend is temporarily disabled."},
+        status_code=503
+    )
 
 """
 ADDITION to: backend/app/api/ai_inference.py

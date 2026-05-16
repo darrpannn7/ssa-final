@@ -9,19 +9,17 @@ body {
 
 /* Global space background */
 body {
-  background: #05070c;
+  background: #000000;
   overflow: auto;
 }
 
-/* Fixed subtle solar glow */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 40% 35%, rgba(255,180,0,0.18), transparent 45%);
-  pointer-events: none;
-  z-index: -1;
+/* Hide scrollbar globally — keep scroll functionality */
+* {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+*::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari/Opera */
 }
 
 
