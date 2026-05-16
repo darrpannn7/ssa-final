@@ -16,6 +16,19 @@ import {
 } from "@/lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
+interface CMEEvent {
+  activityID: string;
+  startTime: string;
+  sourceLocation: string;
+  note: string;
+  instruments: string[];
+  speed: number | null;
+  latitude: number | null;
+  longitude: number | null;
+  halfAngle: number | null;
+  type: string | null;
+  impactProbability: string;
+}
 
 interface DashboardState {
   flareClass: string;
@@ -135,10 +148,10 @@ export default function SpaceWeatherDashboard() {
       let highestCmeRisk = "Low";
       if (cmeRes.status === "fulfilled") {
         cmeCount = cmeRes.value?.total ?? 0;
-        const events = cmeRes.value?.cme_events ?? [];
-        if (events.some((e: any) => e.impactProbability === "High")) {
+        const events = (cmeRes.value?.cme_events ?? []) as CMEEvent[];
+        if (events.some((e) => e.impactProbability === "High")) {
           highestCmeRisk = "High";
-        } else if (events.some((e: any) => e.impactProbability === "Moderate")) {
+        } else if (events.some((e) => e.impactProbability === "Moderate")) {
           highestCmeRisk = "Moderate";
         }
       }
