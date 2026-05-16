@@ -45,6 +45,16 @@ interface DashboardState {
   loading: boolean;
 }
 
+// ─── Flux to Class Converter ──────────────────────────────────────────────────
+function fluxToClass(flux: number): string {
+  if (flux >= 1e-4) return `X${(flux / 1e-4).toFixed(1)}`;
+  if (flux >= 1e-5) return `M${(flux / 1e-5).toFixed(1)}`;
+  if (flux >= 1e-6) return `C${(flux / 1e-6).toFixed(1)}`;
+  if (flux >= 1e-7) return `B${(flux / 1e-7).toFixed(1)}`;
+  if (flux > 0) return `A${(flux / 1e-8).toFixed(1)}`;
+  return "A0.0";
+}
+
 
 // ─── Summary text builder ─────────────────────────────────────────────────────
 
@@ -111,9 +121,23 @@ export default function SpaceWeatherDashboard() {
         getKpIndex(),
       ]);
 
+      // X-Ray flux — API returns { primary: [{time_tag, flux}], secondary: [...] }
+      let xrayFlux: number[] = [];
+      let currentFlux = 0;
+      if (xrayRes.status === "fulfilled") {
+        const data = xrayRes.value;
+        const primary: { flux?: number }[] = data?.primary ?? [];
+        xrayFlux = primary.slice(-20).map((d) => d?.flux ?? 0);
+        if (primary.length > 0) {
+          currentFlux = primary[primary.length - 1]?.flux ?? 0;
+        }
+      }
+
       // Flares
       let flareClass = "C1.0";
-      if (flareRes.status === "fulfilled" && flareRes.value?.flares?.length > 0) {
+      if (currentFlux > 0) {
+        flareClass = fluxToClass(currentFlux);
+      } else if (flareRes.status === "fulfilled" && flareRes.value?.flares?.length > 0) {
         flareClass = flareRes.value.flares.at(-1)?.classType ?? "C1.0";
       }
 
@@ -156,13 +180,7 @@ export default function SpaceWeatherDashboard() {
         }
       }
 
-      // X-Ray flux — API returns { primary: [{time_tag, flux}], secondary: [...] }
-      let xrayFlux: number[] = [];
-      if (xrayRes.status === "fulfilled") {
-        const data = xrayRes.value;
-        const primary: { flux?: number }[] = data?.primary ?? [];
-        xrayFlux = primary.slice(-20).map((d) => d?.flux ?? 0);
-      }
+      // (X-Ray flux was moved up to correctly derive flareClass)
 
       // Kp Index — real NOAA Planetary K-index
       let kpIndex = 1;

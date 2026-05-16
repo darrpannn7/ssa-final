@@ -77,7 +77,11 @@ class SunPyProcessor:
 
         # Normalize data (clipping magnetic field values for visualization)
         data = np.nan_to_num(hmi_resampled.data, nan=0)
-        data = np.clip(data, -150, 150) # Clip extreme gauss values
+        data = np.clip(data, -250, 250) # Clip extreme gauss values
+
+        # FITS arrays have origin at bottom-left. Flip vertically so row 0 is Top (Solar North).
+        # This fixes both the generated image and the frontend bounding box coordinates.
+        data = np.flipud(data)
 
         return {
             "data": data.tolist(), # Convert numpy -> list for JSON

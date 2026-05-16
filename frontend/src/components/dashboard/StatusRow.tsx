@@ -20,29 +20,18 @@ interface StatusCardData {
 
 // ─── Color Code: Green=Nominal, Yellow=Moderate, Orange=Strong, Red=Extreme ──
 
-function getScaleColor(scale: AlertLevel) {
-  const s = scale[0];
-  if (s === "R") {
-    const n = parseInt(scale[1]);
-    if (n >= 4) return { text: "text-red-400", bg: "bg-red-500/20", border: "border-red-500/50" };       // Extreme
-    if (n === 3) return { text: "text-orange-400", bg: "bg-orange-500/20", border: "border-orange-500/50" }; // Strong
-    if (n === 2) return { text: "text-yellow-400", bg: "bg-yellow-500/20", border: "border-yellow-500/50" }; // Moderate
-    return { text: "text-green-400", bg: "bg-green-500/20", border: "border-green-500/50" };             // Nominal
+function getStatusColor(status: string) {
+  const s = status.toUpperCase();
+  if (s === "EXTREME" || s === "SEVERE") {
+    return { text: "text-red-400", bg: "bg-red-500/20", border: "border-red-500/50" };
   }
-  if (s === "S") {
-    const n = parseInt(scale[1]);
-    if (n >= 4) return { text: "text-red-400", bg: "bg-red-500/20", border: "border-red-500/50" };       // Extreme
-    if (n === 3) return { text: "text-orange-400", bg: "bg-orange-500/20", border: "border-orange-500/50" }; // Strong
-    if (n === 2) return { text: "text-yellow-400", bg: "bg-yellow-500/20", border: "border-yellow-500/50" }; // Moderate
-    return { text: "text-green-400", bg: "bg-green-500/20", border: "border-green-500/50" };             // Nominal
+  if (s === "STRONG" || s === "HIGH" || s === "WARNING") {
+    return { text: "text-orange-400", bg: "bg-orange-500/20", border: "border-orange-500/50" };
   }
-  if (s === "G") {
-    const n = parseInt(scale[1]);
-    if (n >= 4) return { text: "text-red-400", bg: "bg-red-500/20", border: "border-red-500/50" };       // Extreme
-    if (n === 3) return { text: "text-orange-400", bg: "bg-orange-500/20", border: "border-orange-500/50" }; // Strong
-    if (n === 2) return { text: "text-yellow-400", bg: "bg-yellow-500/20", border: "border-yellow-500/50" }; // Moderate
-    return { text: "text-green-400", bg: "bg-green-500/20", border: "border-green-500/50" };             // Nominal
+  if (s === "MODERATE" || s === "CAUTION" || s === "WATCH") {
+    return { text: "text-yellow-400", bg: "bg-yellow-500/20", border: "border-yellow-500/50" };
   }
+  // NOMINAL, NONE, QUIET, NORMAL
   return { text: "text-green-400", bg: "bg-green-500/20", border: "border-green-500/50" };
 }
 
@@ -51,7 +40,7 @@ function getScaleColor(scale: AlertLevel) {
 const FlareIcon = () => (
   <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
     <circle cx="20" cy="20" r="9" fill="#f97316" opacity="0.9" />
-    {[0,45,90,135,180,225,270,315].map((angle) => (
+    {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
       <line
         key={angle}
         x1="20" y1="20"
@@ -66,7 +55,7 @@ const FlareIcon = () => (
 const SEPIcon = () => (
   <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
     <circle cx="20" cy="20" r="8" stroke="#facc15" strokeWidth="2" fill="none" opacity="0.6" />
-    <circle cx="20" cy="20" r="14" stroke="#facc15" strokeWidth="1" fill="none" opacity="0.3" strokeDasharray="3 3"/>
+    <circle cx="20" cy="20" r="14" stroke="#facc15" strokeWidth="1" fill="none" opacity="0.3" strokeDasharray="3 3" />
     <circle cx="20" cy="20" r="4" fill="#facc15" opacity="0.9" />
     {[30, 90, 150, 210, 270, 330].map((angle) => (
       <circle
@@ -108,7 +97,7 @@ const SatelliteIcon = () => (
 // ─── Status Card ─────────────────────────────────────────────────────────────
 
 function StatusCard({ card }: { card: StatusCardData }) {
-  const colors = getScaleColor(card.scale);
+  const colors = getStatusColor(card.status);
   return (
     <Link href={card.href} className="block group">
       <div className={`
@@ -149,33 +138,48 @@ interface StatusRowProps {
 }
 
 function deriveFlareStatus(cls: string): { status: string; scale: AlertLevel; sub: string } {
-  if (cls.startsWith("X")) return { status: "ELEVATED", scale: "R3", sub: "Strong Flares Likely" };
-  if (cls.startsWith("M")) return { status: "MODERATE", scale: "R2", sub: "M-class Activity" };
-  if (cls.startsWith("C")) return { status: "ACTIVE", scale: "R1", sub: "C-class Flares" };
-  return { status: "QUIET", scale: "R1", sub: "Minimal Activity" };
+  const letter = cls.charAt(0).toUpperCase();
+  const number = parseFloat(cls.substring(1)) || 0;
+
+  let flux = 0;
+  if (letter === 'A') flux = number * 1e-8;
+  else if (letter === 'B') flux = number * 1e-7;
+  else if (letter === 'C') flux = number * 1e-6;
+  else if (letter === 'M') flux = number * 1e-5;
+  else if (letter === 'X') flux = number * 1e-4;
+
+  if (flux >= 5e-4) {
+    return { status: "EXTREME", scale: "R4", sub: "Extreme Flares (>= X5)" };
+  } else if (flux >= 1e-4) {
+    return { status: "STRONG", scale: "R3", sub: "Strong Flares (X-class)" };
+  } else if (flux >= 1e-5) {
+    return { status: "MODERATE", scale: "R2", sub: "Moderate Flares (M-class)" };
+  } else {
+    return { status: "NOMINAL", scale: "R1", sub: "Nominal Activity" };
+  }
 }
 
 function deriveSEPStatus(risk: string): { status: string; scale: AlertLevel; sub: string } {
-  if (risk === "extreme" || risk === "severe") return { status: "SEVERE", scale: "S3", sub: "High Proton Levels" };
-  if (risk === "high") return { status: "HIGH", scale: "S2", sub: "Enhanced Proton Levels" };
+  if (risk === "extreme" || risk === "severe") return { status: "EXTREME", scale: "S3", sub: "High Proton Levels" };
+  if (risk === "high") return { status: "STRONG", scale: "S2", sub: "Enhanced Proton Levels" };
   if (risk === "moderate") return { status: "MODERATE", scale: "S2", sub: "Enhanced Proton Levels" };
-  return { status: "QUIET", scale: "S1", sub: "Background Levels" };
+  return { status: "NOMINAL", scale: "S1", sub: "Nominal Activity" };
 }
 
 function deriveCMEStatus(count: number, highestRisk: string): { status: string; scale: AlertLevel; sub: string } {
   if (count === 0) return { status: "NONE", scale: "R1", sub: "No CME Detected" };
-  
-  if (highestRisk === "High")     return { status: "WARNING", scale: "R3", sub: `${count} CMEs — High Earth Impact Risk` };
-  if (highestRisk === "Moderate") return { status: "WATCH",   scale: "R2", sub: `${count} CMEs — Moderate Impact Risk` };
-  
+
+  if (highestRisk === "High") return { status: "STRONG", scale: "R3", sub: `${count} CMEs — High Earth Impact Risk` };
+  if (highestRisk === "Moderate") return { status: "MODERATE", scale: "R2", sub: `${count} CMEs — Moderate Impact Risk` };
+
   // All CMEs are Low risk (not Earth-directed)
-  return { status: "QUIET", scale: "R1", sub: `${count} CMEs — Low Impact Risk` };
+  return { status: "NOMINAL", scale: "R1", sub: `${count} CMEs — Low Impact Risk` };
 }
 
 function deriveWindStatus(speed: number, density: number): { status: string; scale: AlertLevel; sub: string } {
   if (speed > 800 || density > 20) return { status: "EXTREME", scale: "G3", sub: "Severe Wind Conditions" };
-  if (speed > 700 || density > 15) return { status: "HIGH", scale: "G2", sub: "Speed & Density Elevated" };
-  if (speed > 500 || density > 8)  return { status: "MODERATE", scale: "G2", sub: "Speed & Density Elevated" };
+  if (speed > 700 || density > 15) return { status: "STRONG", scale: "G2", sub: "Speed & Density Elevated" };
+  if (speed > 500 || density > 8) return { status: "MODERATE", scale: "G2", sub: "Speed & Density Elevated" };
   return { status: "NOMINAL", scale: "G1", sub: "Nominal Conditions" };
 }
 
@@ -186,19 +190,19 @@ function deriveSatelliteStatus(
 ): { status: string; scale: AlertLevel; sub: string } {
   // HIGH: severe wind OR strong geomagnetic storm (Kp>=6)
   if (speed > 700 || density > 15 || kp >= 6)
-    return { status: "HIGH",    scale: "G3", sub: "High Risk of Charging, Drag & Upsets" };
+    return { status: "HIGH", scale: "G3", sub: "High Risk of Charging, Drag & Upsets" };
   // CAUTION: moderate wind OR moderate geomagnetic activity (Kp>=4)
-  if (speed > 450 || density > 8  || kp >= 4)
+  if (speed > 450 || density > 8 || kp >= 4)
     return { status: "CAUTION", scale: "G2", sub: "Increased Risk of Charging & Drag" };
-  return   { status: "NORMAL",  scale: "G1", sub: "Normal Operations" };
+  return { status: "NOMINAL", scale: "G1", sub: "Normal Operations" };
 }
 
 export default function StatusRow({ flareClass, sepRisk, cmeCount, highestCmeRisk, windSpeed, windDensity, kpIndex }: StatusRowProps) {
   const flare = deriveFlareStatus(flareClass);
-  const sep   = deriveSEPStatus(sepRisk);
-  const cme   = deriveCMEStatus(cmeCount, highestCmeRisk);
-  const wind  = deriveWindStatus(windSpeed, windDensity);
-  const sat   = deriveSatelliteStatus(windSpeed, windDensity, kpIndex);
+  const sep = deriveSEPStatus(sepRisk);
+  const cme = deriveCMEStatus(cmeCount, highestCmeRisk);
+  const wind = deriveWindStatus(windSpeed, windDensity);
+  const sat = deriveSatelliteStatus(windSpeed, windDensity, kpIndex);
 
   const cards: StatusCardData[] = [
     {

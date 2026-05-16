@@ -46,15 +46,15 @@ def apply_solar_disk_mask(data):
 
     processed = processed.astype(float)
 
-    # Contrast normalization
-    vmin = np.percentile(processed, 1)
-    vmax = np.percentile(processed, 99)
-
+    # Contrast normalization - fixed range to match SDO visual style
+    # 0 Gauss -> 0.5 (mid-gray)
+    vmin, vmax = -250, 250
     processed = np.clip(processed, vmin, vmax)
-
+    
+    # Normalize to [0, 1]
     processed = (processed - vmin) / (vmax - vmin)
 
-    # Apply mask
+    # Apply mask (black background)
     processed[mask] = 0
 
     return processed
@@ -69,7 +69,7 @@ def get_magnetogram_image():
 
         data = np.array(result["data"])
 
-        image_path = "./assets/flare/magnetogram/latest.png"
+        image_path = f"{processor.ASSETS_DIR}/latest_hmi.png"
 
         os.makedirs(os.path.dirname(image_path), exist_ok=True)
 
